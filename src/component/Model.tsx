@@ -52,19 +52,20 @@ export default React.memo(function Model({
           ...svgStyle,
         }}
       >
-        {modelData.map(exercise =>
-          exercise.svgPoints.map((points, index) => (
+        {modelData.map(exercise => {
+          const isDisabledMuscle = !data.find(element => element.muscles.includes(exercise.muscle));
+          return exercise.svgPoints.map((points, index) => (
             <polygon
               key={index}
               points={points}
-              onClick={() => handleClick(exercise.muscle, onClick)}
+              onClick={() => !isDisabledMuscle && handleClick(exercise.muscle, onClick)}
               style={{
-                cursor: 'pointer',
+                cursor: isDisabledMuscle ? undefined : 'pointer',
                 fill: ensure(fillIntensityColor(muscleData, highlightedColors, exercise.muscle), bodyColor),
               }}
             />
-          ))
-        )}
+          ));
+        })}
       </svg>
     </div>
   );
